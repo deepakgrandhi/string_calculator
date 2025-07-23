@@ -41,6 +41,8 @@ class StringCalculator {
       throw ArgumentError('negatives not allowed: ${negatives.join(', ')}');
     }
 
-    return parsedNumbers.fold(0, (a, b) => a + b);
+    final validNumbers = parsedNumbers.where((n) => n <= 1000);
+
+    return validNumbers.fold(0, (a, b) => a + b);
   }
 }

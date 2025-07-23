@@ -28,3 +28,6 @@
 ### S5
 - Updated the add method with logic to handle negative numbers.
 - Im throwing exceptions on catching negative numbers
+
+### S6
+- Added a new test case where the numbers greater than and equal to 1000 are ignored
