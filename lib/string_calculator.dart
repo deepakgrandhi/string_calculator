@@ -5,32 +5,56 @@ class StringCalculator {
     if (numbers.trim().isEmpty) return 0;
 
     final delimiters = [',', '\n'];
-    final delimiterPattern = RegExp(r'^//(?:\[(.+)\]|(.+))\n');
-    final match = delimiterPattern.firstMatch(numbers);
+    final delimiterHeaderPattern = RegExp(r'^//(.+)\n');
+    final match = delimiterHeaderPattern.firstMatch(numbers);
 
     if (match != null) {
-      final customDelimiter = match.group(1) ?? match.group(2)!;
-      delimiters.add(customDelimiter);
+      final raw = match.group(1)!;
+      final bracketMatches = RegExp(r'\[(.*?)\]').allMatches(raw).toList();
+
+      if (bracketMatches.isNotEmpty) {
+        final extracted =
+            bracketMatches
+                .map((m) => m.group(1)!)
+                .where((d) => d.isNotEmpty)
+                .toList();
+
+        if (extracted.any((d) => d.isEmpty)) {
+          if (strictMode) throw FormatException('Empty delimiter not allowed');
+        }
+
+        delimiters.addAll(extracted);
+      } else {
+        if (raw.contains('[') || raw.contains(']')) {
+          if (strictMode) {
+            throw FormatException('Malformed custom delimiter format');
+          } else {
+            print('Skipping malformed delimiter header: "$raw"');
+          }
+        } else {
+          delimiters.add(raw);
+        }
+      }
+
       numbers = numbers.substring(match.end);
     }
 
     if (numbers.trim().isEmpty) return 0;
 
+    final delimiterRegex = RegExp(delimiters.map(RegExp.escape).join('|'));
     final parsedNumbers = <int>[];
 
-    for (final value in numbers
-        .split(RegExp(delimiters.map(RegExp.escape).join('|')))
-        .map((n) => n.trim())) {
-      if (value.isEmpty) {
+    for (final token in numbers.split(delimiterRegex).map((n) => n.trim())) {
+      if (token.isEmpty) {
         if (strictMode) throw FormatException('Empty value found');
         print('Skipping invalid input: ""');
         continue;
       }
 
-      final parsed = int.tryParse(value);
+      final parsed = int.tryParse(token);
       if (parsed == null) {
-        if (strictMode) throw FormatException('Invalid number: "$value"');
-        print('Skipping invalid input: "$value"');
+        if (strictMode) throw FormatException('Invalid number: "$token"');
+        print('Skipping invalid input: "$token"');
         continue;
       }
 
@@ -42,8 +66,6 @@ class StringCalculator {
       throw ArgumentError('negatives not allowed: ${negatives.join(', ')}');
     }
 
-    final validNumbers = parsedNumbers.where((n) => n <= 1000);
-
-    return validNumbers.fold(0, (a, b) => a + b);
+    return parsedNumbers.where((n) => n <= 1000).fold(0, (a, b) => a + b);
   }
 }

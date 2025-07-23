@@ -1,4 +1,4 @@
-# Core change
+# Change Log for String Calculator
 
 - **strictMode**
     - if strickMode is true then throws Exceptions
@@ -40,3 +40,8 @@
 - Added support for handling delimiters of any length
 - Modified the regex pattern that is being used since S4 where we handled single delimiter to
   handling delimiter of any length in pattern
+
+### S8
+- Added multiple custom delimiters in specified format
+- handled delimiters of n length in brackets
+- updated the final test file string_calculator_test with all the steps did till now
