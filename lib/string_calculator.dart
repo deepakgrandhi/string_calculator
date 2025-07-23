@@ -15,32 +15,32 @@ class StringCalculator {
 
     if (numbers.trim().isEmpty) return 0;
 
-    final parts = numbers
+    final parsedNumbers = <int>[];
+
+    for (final value in numbers
         .split(RegExp(delimiters.map(RegExp.escape).join('|')))
-        .map((n) => n.trim())
-        .where((n) {
-          if (n.isEmpty) {
-            if (strictMode) {
-              throw FormatException('Empty value found');
-            } else {
-              print('Skipping invalid input: ""');
-              return false;
-            }
-          }
+        .map((n) => n.trim())) {
+      if (value.isEmpty) {
+        if (strictMode) throw FormatException('Empty value found');
+        print('Skipping invalid input: ""');
+        continue;
+      }
 
-          if (int.tryParse(n) == null) {
-            if (strictMode) {
-              throw FormatException('Invalid number: "$n"');
-            } else {
-              print('Skipping invalid input: "$n"');
-              return false;
-            }
-          }
+      final parsed = int.tryParse(value);
+      if (parsed == null) {
+        if (strictMode) throw FormatException('Invalid number: "$value"');
+        print('Skipping invalid input: "$value"');
+        continue;
+      }
 
-          return true;
-        })
-        .map(int.parse);
+      parsedNumbers.add(parsed);
+    }
 
-    return parts.fold(0, (a, b) => a + b);
+    final negatives = parsedNumbers.where((n) => n < 0).toList();
+    if (negatives.isNotEmpty) {
+      throw ArgumentError('negatives not allowed: ${negatives.join(', ')}');
+    }
+
+    return parsedNumbers.fold(0, (a, b) => a + b);
   }
 }

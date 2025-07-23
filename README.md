@@ -24,3 +24,7 @@
 - Updated the add method to handle custom regex where the input starts with //
 - updated teh logic to handle more delimiters like ;
 - Ive added empty input handling also here
+
+### S5
+- Updated the add method with logic to handle negative numbers.
+- Im throwing exceptions on catching negative numbers
