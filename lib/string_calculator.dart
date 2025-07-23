@@ -5,12 +5,13 @@ class StringCalculator {
     if (numbers.trim().isEmpty) return 0;
 
     final delimiters = [',', '\n'];
-    final delimiterPattern = RegExp(r'^//(.+)\n');
-    final matchingNumbers = delimiterPattern.firstMatch(numbers);
+    final delimiterPattern = RegExp(r'^//(?:\[(.+)\]|(.+))\n');
+    final match = delimiterPattern.firstMatch(numbers);
 
-    if (matchingNumbers != null) {
-      delimiters.add(matchingNumbers.group(1)!);
-      numbers = numbers.substring(matchingNumbers.end);
+    if (match != null) {
+      final customDelimiter = match.group(1) ?? match.group(2)!;
+      delimiters.add(customDelimiter);
+      numbers = numbers.substring(match.end);
     }
 
     if (numbers.trim().isEmpty) return 0;

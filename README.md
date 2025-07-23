@@ -21,13 +21,22 @@
 - Updated the string_calculator add method to handle delimiters. now we are handling , and /n here
 
 ### S4
+
 - Updated the add method to handle custom regex where the input starts with //
 - updated teh logic to handle more delimiters like ;
 - Ive added empty input handling also here
 
 ### S5
+
 - Updated the add method with logic to handle negative numbers.
 - Im throwing exceptions on catching negative numbers
 
 ### S6
+
 - Added a new test case where the numbers greater than and equal to 1000 are ignored
+
+### S7
+
+- Added support for handling delimiters of any length
+- Modified the regex pattern that is being used since S4 where we handled single delimiter to
+  handling delimiter of any length in pattern
