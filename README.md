@@ -19,3 +19,8 @@
 ### S3
 
 - Updated the string_calculator add method to handle delimiters. now we are handling , and /n here
+
+### S4
+- Updated the add method to handle custom regex where the input starts with //
+- updated teh logic to handle more delimiters like ;
+- Ive added empty input handling also here

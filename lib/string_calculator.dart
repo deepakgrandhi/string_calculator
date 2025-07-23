@@ -5,8 +5,18 @@ class StringCalculator {
     if (numbers.trim().isEmpty) return 0;
 
     final delimiters = [',', '\n'];
+    final delimiterPattern = RegExp(r'^//(.+)\n');
+    final matchingNumbers = delimiterPattern.firstMatch(numbers);
+
+    if (matchingNumbers != null) {
+      delimiters.add(matchingNumbers.group(1)!);
+      numbers = numbers.substring(matchingNumbers.end);
+    }
+
+    if (numbers.trim().isEmpty) return 0;
+
     final parts = numbers
-        .split(RegExp('[${delimiters.join()}]'))
+        .split(RegExp(delimiters.map(RegExp.escape).join('|')))
         .map((n) => n.trim())
         .where((n) {
           if (n.isEmpty) {
