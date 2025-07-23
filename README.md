@@ -15,3 +15,7 @@
 - integration test for S2 is almost done in S1 itself. Here Ive made sure that n number of items in
   the list will be added properly and also tried doing the same using List.generate(100, (i) => '$
   {i + 1}').join(',')
+
+### S3
+
+- Updated the string_calculator add method to handle delimiters. now we are handling , and /n here
